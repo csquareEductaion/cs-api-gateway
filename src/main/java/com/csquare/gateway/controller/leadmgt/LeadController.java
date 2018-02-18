@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.csquare.gateway.util.PropertyUtil;
 import com.csquare.gateway.util.RestServiceClient;
+import com.csquare.gateway.util.StringUtil;
 
 
 @RestController
@@ -43,6 +44,7 @@ public class LeadController {
         String firstName = jsonObj.getString("firstName");
         String lastName = jsonObj.getString("lastName");
         String email = jsonObj.getString("email");
+        String isStudent = jsonObj.getString("isstudent");
         // JSONArray leadGradeList = jsonObj.getJSONArray("leadGradeList");
         // String gradeId0 =
         // leadGradeList.getJSONObject(0).getString("gradeId");
@@ -50,6 +52,8 @@ public class LeadController {
         // leadGradeList.getJSONObject(1).getString("gradeId");
         String cs_lead_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_lead_mgt");
         String cs_user_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_user_mgt");
+        String cs_student_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_student_mgt");
+        String cs_tutor_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_tutor_mgtURL");
 
         RestServiceClient.INSTANCE.postForObject(cs_lead_mgtURL + "addLead", json, String.class);
 
@@ -59,13 +63,20 @@ public class LeadController {
         user.put("email", email);
         RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "addUser", user.toString(), String.class);
 
-        // JSONObject student = new JSONObject();
-        // user.put("firstName", firstName);
-        // user.put("lastName", lastName);
-        // user.put("email", email);
-        // RestServiceClient.INSTANCE.postForObject(
-        // "http://localhost:8001/cs_student_mgt/addStudent", student,
-        // String.class);
+        boolean isStud = StringUtil.equalsIgnoreCase("true", isStudent);
+        if (isStud) {
+            JSONObject student = new JSONObject();
+            student.put("firstName", firstName);
+            student.put("lastName", lastName);
+            student.put("email", email);
+            RestServiceClient.INSTANCE.postForObject(cs_student_mgtURL + "addStudent", student, String.class);
+        } else {
+            JSONObject tutor = new JSONObject();
+            tutor.put("firstName", firstName);
+            tutor.put("lastName", lastName);
+            tutor.put("email", email);
+            RestServiceClient.INSTANCE.postForObject(cs_tutor_mgtURL + "addTutor", tutor, String.class);
+        }
 
         return json;
     }
