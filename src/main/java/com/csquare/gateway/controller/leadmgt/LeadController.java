@@ -39,6 +39,11 @@ public class LeadController {
     @RequestMapping(value = "/addLead", method = RequestMethod.POST, headers = "Accept=application/json")
     public String addLead(@RequestBody String json) throws ValidationException {
 
+        String cs_lead_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_lead_mgt");
+        String cs_user_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_user_mgt");
+        String cs_student_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_student_mgt");
+        String cs_tutor_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_tutor_mgtURL");
+
         JSONObject jsonObj = new JSONObject(json);
         // String json = jsonObj.toString();
         String firstName = jsonObj.getString("firstName");
@@ -50,10 +55,6 @@ public class LeadController {
         // leadGradeList.getJSONObject(0).getString("gradeId");
         // String gradeId1 =
         // leadGradeList.getJSONObject(1).getString("gradeId");
-        String cs_lead_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_lead_mgt");
-        String cs_user_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_user_mgt");
-        String cs_student_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_student_mgt");
-        String cs_tutor_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_tutor_mgtURL");
 
         RestServiceClient.INSTANCE.postForObject(cs_lead_mgtURL + "addLead", json, String.class);
 
