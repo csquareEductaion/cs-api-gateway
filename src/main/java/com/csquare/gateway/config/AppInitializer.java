@@ -6,8 +6,9 @@ import javax.servlet.ServletRegistration;
 
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 
-import com.csquare.gateway.servlet.ApiGateWayServlet;
+import com.csquare.gateway.util.PropertyUtil;
 import com.csquare.gateway.util.StringUtil;
 import com.csquare.gateway.util.SystemUtil;
 
@@ -31,11 +32,12 @@ public class AppInitializer implements ServletContextInitializer {
         ctx.setServletContext(servletContext);
 
         addServlet(servletContext, ctx, "/cs-api-gateway/*");
+        PropertyUtil.INSTANCE.init("cs-api-gateway-app.properties");
     }
 
     private void addServlet(ServletContext servletContext, AnnotationConfigWebApplicationContext ctx, String urlPattern) {
 
-        ServletRegistration.Dynamic dynamic0 = servletContext.addServlet("ApiGateWayServlet", new ApiGateWayServlet(ctx));
+        ServletRegistration.Dynamic dynamic0 = servletContext.addServlet("dispatcherServlet", new DispatcherServlet(ctx));
         String container = SystemUtil.getProperty("CONTAINER");
         if (StringUtil.equals("SELF", container)) {
             dynamic0.addMapping(urlPattern);
