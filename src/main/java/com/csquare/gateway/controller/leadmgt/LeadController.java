@@ -42,7 +42,7 @@ public class LeadController {
         String cs_lead_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_lead_mgt");
         String cs_user_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_user_mgt");
         String cs_student_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_student_mgt");
-        String cs_tutor_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_tutor_mgtURL");
+        String cs_tutor_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_tutor_mgt");
 
         JSONObject jsonObj = new JSONObject(json);
         // String json = jsonObj.toString();
