@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
+import com.csquare.framework.util.SystemUtil;
 import com.csquare.gateway.config.AppInitializer;
-import com.csquare.gateway.util.SystemUtil;
 
 
 @SpringBootApplication

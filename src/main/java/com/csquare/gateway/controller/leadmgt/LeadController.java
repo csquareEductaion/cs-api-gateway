@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.csquare.gateway.util.PropertyUtil;
+import com.csquare.framework.util.PropertyUtil;
+import com.csquare.framework.util.StringUtil;
 import com.csquare.gateway.util.RestServiceClient;
-import com.csquare.gateway.util.StringUtil;
 
 
 @RestController

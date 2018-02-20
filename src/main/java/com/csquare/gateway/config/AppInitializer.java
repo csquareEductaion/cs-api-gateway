@@ -8,9 +8,9 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import com.csquare.gateway.util.PropertyUtil;
-import com.csquare.gateway.util.StringUtil;
-import com.csquare.gateway.util.SystemUtil;
+import com.csquare.framework.util.PropertyUtil;
+import com.csquare.framework.util.StringUtil;
+import com.csquare.framework.util.SystemUtil;
 
 
 /**
