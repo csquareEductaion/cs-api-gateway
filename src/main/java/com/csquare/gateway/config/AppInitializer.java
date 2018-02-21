@@ -28,11 +28,11 @@ public class AppInitializer implements ServletContextInitializer {
      */
     public void onStartup(ServletContext servletContext) throws ServletException {
 
+        PropertyUtil.API_GATEWAY.init();
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
         ctx.setServletContext(servletContext);
 
         addServlet(servletContext, ctx, "/cs-api-gateway/*");
-        PropertyUtil.INSTANCE.init("cs-api-gateway-app.properties");
     }
 
     private void addServlet(ServletContext servletContext, AnnotationConfigWebApplicationContext ctx, String urlPattern) {
