@@ -37,6 +37,7 @@ public enum RestServiceClient {
         setErrorHandler(restTemplate);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T getForObject(String url, Class<T> cls) throws RestClientException {
 
         T value = null;
@@ -85,6 +86,7 @@ public enum RestServiceClient {
     }
 
     // ---------------------------------------------------------------------------------------------------------------------
+    @SuppressWarnings("unchecked")
     public <T> T postForObject(String url, Object param, Class<T> cls) throws RestClientException {
 
         T value = null;
