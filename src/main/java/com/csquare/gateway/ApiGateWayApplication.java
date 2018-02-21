@@ -1,6 +1,7 @@
 package com.csquare.gateway;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -13,7 +14,7 @@ import com.csquare.gateway.config.AppInitializer;
 @SpringBootApplication
 public class ApiGateWayApplication extends SpringBootServletInitializer {
 
-    private static final Logger LOGGER = Logger.getLogger(ApiGateWayApplication.class);
+    private static final Logger LOGGER = LogManager.getLogger(ApiGateWayApplication.class);
 
     public static void main(String[] args) {
 
