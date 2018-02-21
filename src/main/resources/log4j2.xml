@@ -11,7 +11,7 @@
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
 		<!-- File Appender -->
-		<File name="FileAppender" fileName="/tmp/cs/logs/cs-lead-mgt.log">
+		<File name="FileAppender" fileName="/tmp/cs/logs/cs-api-gateway-mgt.log">
 		    <PatternLayout pattern="${LOG_PATTERN}" />
 		    <Policies>
 		        <SizeBasedTriggeringPolicy size="10MB" />
