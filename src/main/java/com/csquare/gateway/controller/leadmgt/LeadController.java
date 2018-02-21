@@ -39,10 +39,10 @@ public class LeadController {
     @RequestMapping(value = "/addLead", method = RequestMethod.POST, headers = "Accept=application/json")
     public String addLead(@RequestBody String json) throws ValidationException {
 
-        String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getProperty("cs_lead_mgt");
-        String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getProperty("cs_user_mgt");
-        String cs_student_mgtURL = PropertyUtil.API_GATEWAY.getProperty("cs_student_mgt");
-        String cs_tutor_mgtURL = PropertyUtil.API_GATEWAY.getProperty("cs_tutor_mgt");
+        String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
+        String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
+        String cs_student_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_student_mgt");
+        String cs_tutor_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_tutor_mgt");
 
         JSONObject jsonObj = new JSONObject(json);
         // String json = jsonObj.toString();
