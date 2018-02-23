@@ -20,7 +20,7 @@ public class ApiGateWayApplication extends SpringBootServletInitializer {
 
         LOGGER.info("Starting CSquareApplication.main");
         SystemUtil.setProperty("CONTAINER", "SELF");
-        SystemUtil.setEnv(SystemUtil.SystemKey.CS_APPCONFIG_PATH, "D:/Csquare/cs-app-config");
+        SystemUtil.setEnv(SystemUtil.SystemKey.CS_APPCONFIG_PATH, "G:/CsquareProject/backend/backend/cs-app-config");
 
         SpringApplicationBuilder application = new SpringApplicationBuilder();
         application.logStartupInfo(false);
