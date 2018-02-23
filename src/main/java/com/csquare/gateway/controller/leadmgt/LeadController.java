@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csquare.framework.util.PropertyUtil;
-import com.csquare.framework.util.StringUtil;
 import com.csquare.gateway.util.JsonUtil;
 import com.csquare.gateway.util.RestServiceClient;
 
@@ -72,7 +71,7 @@ public class LeadController {
     }
     
     @RequestMapping(value = "/updateLead", method = RequestMethod.POST, headers = "Accept=application/json")
-    public String updateUser(@RequestBody String json) throws ValidationException {
+    public String updateLead(@RequestBody String json) throws ValidationException {
     	
     	 String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
          String cs_student_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_student_mgt");
@@ -187,37 +186,41 @@ public class LeadController {
 	         } else {
 	        	 return json;
 	         }
-       
-    	
     }
     
-//    @RequestMapping(value = "/addRefCity", method = RequestMethod.POST, headers = "Accept=application/json")
-//    public String addRefCity(@RequestBody String json) throws ValidationException {
-//    	
-//    	String cs_ref_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_ref_mgt");
-//    	System.out.println(cs_ref_mgtURL + "addRefCity");
-//    	RestServiceClient.INSTANCE.postForObject(cs_ref_mgtURL + "addRefCity", json, String.class);
-//    	
-//		return json;
-//    	
-//    
-//    }
-//
-//    @RequestMapping(value = "/getRefCityById/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
-//    public JsonUtil getRefCityById(@PathVariable String id) throws ValidationException {
-//    	String cs_ref_mgtURL = PropertyUtil.INSTANCE.getProperty("cs_ref_mgt");
-//    	RestServiceClient.INSTANCE.
-//		RestServiceClient.INSTANCE.getForObject(cs_ref_mgtURL + "getRefCityById/"+id, cls);
-//		return JsonUtil;
-//    	
-//    
-//    }
-//    
-//
-//    @RequestMapping(value = "/addRefGrades", method = RequestMethod.POST, headers = "Accept=application/json")
-//    public String addRefGrades(@RequestBody String json) throws ValidationException {
-//		return json;
-//    	
-//    
-//    }
+    @RequestMapping(value = "/deleteLead/{leadId}", method = RequestMethod.POST, headers = "Accept=application/json")
+    public void deleteLead(@PathVariable String leadId) {
+
+    	String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
+    	RestServiceClient.INSTANCE.postForObject(cs_lead_mgtURL + "deleteLead/"+leadId,"",String.class);
+    }
+
+    @RequestMapping(value = "/getLeadById/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+    public String getLeadById(@PathVariable String id) {
+      
+        String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
+    	String lead = RestServiceClient.INSTANCE.getForObject(cs_lead_mgtURL + "getLeadById/"+id, String.class);
+		
+		return lead;
+    }
+
+    @RequestMapping(value = "/getAllLeads/{offset}/{limit}", method = RequestMethod.GET, headers = "Accept=application/json")
+    public String getAllLeads(@PathVariable Integer offset, @PathVariable Integer limit) {
+
+    	String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
+    	String allLeads = RestServiceClient.INSTANCE.getForObject(cs_lead_mgtURL + "getAllLeads/"+offset+"/"+limit, String.class);
+		
+		return allLeads;
+    }
+
+    @RequestMapping(value = "/searchLead/{offset}/{limit}/{allMatch}", method = RequestMethod.POST, headers = "Accept=application/json")
+    public String searchLead(@RequestBody String criterias, @PathVariable Integer offset, @PathVariable Integer limit,
+        @PathVariable Boolean allMatch) {
+    	String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
+    	
+    	String leadList = RestServiceClient.INSTANCE.postForObject(cs_lead_mgtURL + "searchLead/"+offset+"/"+limit+"/"+allMatch,criterias.toString(), String.class);
+		
+        return leadList;
+    }
+    
 }
