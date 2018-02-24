@@ -223,4 +223,22 @@ public class LeadController {
         return leadList;
     }
     
+    @RequestMapping(value = "/getAllLeadStatus", method = RequestMethod.GET, headers = "Accept=application/json")
+    public String getAllLeadStatus() {
+
+    	String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
+    	String allLeadStatus = RestServiceClient.INSTANCE.getForObject(cs_lead_mgtURL + "getAllLeadStatus", String.class);
+		
+		return allLeadStatus;
+    }
+//    
+//    @RequestMapping(value = "/getAllLeads/{offset}/{limit}", method = RequestMethod.GET, headers = "Accept=application/json")
+//    public String getAllLeads(@PathVariable Integer offset, @PathVariable Integer limit) {
+//
+//    	String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
+//    	String allLeads = RestServiceClient.INSTANCE.getForObject(cs_lead_mgtURL + "getAllLeads/"+offset+"/"+limit, String.class);
+//		
+//		return allLeads;
+//    }
+    
 }

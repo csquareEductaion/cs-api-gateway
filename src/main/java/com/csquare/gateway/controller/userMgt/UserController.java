@@ -64,5 +64,22 @@ public class UserController {
     	String userList = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "searchUser/"+offset+"/"+limit+"/"+allMatch, criterias.toString(), String.class);
     	return userList;
     }
+	   
+	   @RequestMapping(value = "/getAllUserStatus", method = RequestMethod.GET, headers = "Accept=application/json")
+	    public String getAllUserStatus() {
+   	String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
+   	String userStatus = RestServiceClient.INSTANCE.getForObject(cs_user_mgtURL + "getAllUserStatus", String.class);
+   	return userStatus;
+   	
+   }
+	   
+	   @RequestMapping(value = "/getAllUserRoles", method = RequestMethod.GET, headers = "Accept=application/json")
+	    public String getAllUserRoles() {
+  	String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
+  	String userRole = RestServiceClient.INSTANCE.getForObject(cs_user_mgtURL + "getAllUserRoles", String.class);
+  	return userRole;
+  	
+  }
+	   
 	
 }
