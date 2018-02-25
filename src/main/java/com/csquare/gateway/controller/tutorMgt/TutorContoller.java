@@ -32,7 +32,7 @@ public class TutorContoller {
 	        // RestServiceClient.INSTANCE.postForObject("http://localhost:8084/cs_communication_mgt/sendEmail", message, String.class);
 	        //
 		 String cs_tutor_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_tutor_mgt");
-		 String t = RestServiceClient.INSTANCE.postForObject(cs_tutor_mgtURL + "addTutor",tutor , String.class);
+		 String t = RestServiceClient.INSTANCE.postForObject(cs_tutor_mgtURL + "addTutor",tutor.toString() , String.class);
 	        return t;
 	    }
 
@@ -48,7 +48,7 @@ public class TutorContoller {
 	         * }
 	         */
 	    	String cs_tutor_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_tutor_mgt");
-			 String t = RestServiceClient.INSTANCE.postForObject(cs_tutor_mgtURL + "updateTutor",tutor , String.class);
+			 String t = RestServiceClient.INSTANCE.postForObject(cs_tutor_mgtURL + "updateTutor",tutor.toString() , String.class);
 		        return t;
 	    }
 

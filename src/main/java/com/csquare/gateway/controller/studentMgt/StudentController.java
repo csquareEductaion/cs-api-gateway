@@ -18,14 +18,14 @@ public class StudentController {
 	@RequestMapping(value = "/addStudent", method = RequestMethod.POST, headers = "Accept=application/json")
     public String addStudent(@RequestBody String student) {
 		 String cs_student_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_student_mgt");
-		 String s = RestServiceClient.INSTANCE.postForObject(cs_student_mgtURL + "addStudent",student , String.class);
+		 String s = RestServiceClient.INSTANCE.postForObject(cs_student_mgtURL + "addStudent",student.toString() , String.class);
 	        return s;
     }
 
     @RequestMapping(value = "/updateStudent", method = RequestMethod.POST, headers = "Accept=application/json")
     public String updateStudent(@RequestBody String student) {
     	 String cs_student_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_student_mgt");
-		 String s = RestServiceClient.INSTANCE.postForObject(cs_student_mgtURL + "updateStudent",student , String.class);
+		 String s = RestServiceClient.INSTANCE.postForObject(cs_student_mgtURL + "updateStudent",student.toString() , String.class);
 	        return s;
     }
     

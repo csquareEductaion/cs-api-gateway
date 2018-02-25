@@ -24,7 +24,7 @@ public class UserController {
         // RestServiceClient.INSTANCE.postForObject("http://localhost:8084/cs_communication_mgt/sendEmail", message, String.class);
         
 	 String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
-	 String u = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "addUser",user , String.class);
+	 String u = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "addUser",user.toString() , String.class);
         return u;
     }
 
@@ -32,7 +32,7 @@ public class UserController {
 	    public String updateUser(@RequestBody String user) {
 
     	String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
-		 String u = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "updateUser",user , String.class);
+		 String u = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "updateUser",user.toString() , String.class);
 	        return u;
     }
 

@@ -39,6 +39,7 @@ public class LeadController {
         Boolean isStudent = JsonUtil.getBoolean(jsonObj,"isstudent");
         Boolean isTutor = JsonUtil.getBoolean(jsonObj,"istutor");
         String gender = JsonUtil.getString(jsonObj,"gender");
+        String location = JsonUtil.getString(jsonObj, "location");
         String alternate_phone = JsonUtil.getString(jsonObj,"alternatePhone");
         String address = JsonUtil.getString(jsonObj,"address");
         String user_role = null;
@@ -62,6 +63,7 @@ public class LeadController {
         user.put("phone", phone);
         user.put("city", city);
         user.put("gender", gender);
+        user.put("location", location);
         user.put("alternate_phone", alternate_phone);
         user.put("address", address);
         user.put("user_role", user_role);
@@ -87,6 +89,7 @@ public class LeadController {
          String gender = JsonUtil.getString(jsonObj,"gender");
          String alternate_phone = JsonUtil.getString(jsonObj,"alternatePhone");
          String address = JsonUtil.getString(jsonObj,"address");
+         String location = JsonUtil.getString(jsonObj, "location");
          String leadStatus = JsonUtil.getString(jsonObj, "leadStatus");         
          JSONArray subjectArray = jsonObj.getJSONArray("leadSubjectList");	         
          JSONArray syllabusArray = jsonObj.getJSONArray("leadSyllabusList");
@@ -154,7 +157,9 @@ public class LeadController {
 	                 student.put("address", address);
 	                 student.put("studentSubjectList", subjectList);
 	                 student.put("grade", grade);
+	                 student.put("location", location);
 	                 student.put("syllabus", syllabus);
+	                 student.put("converted", true);
 	                 RestServiceClient.INSTANCE.postForObject(cs_student_mgtURL + "addStudent", student.toString(), String.class);
 	                 return student.toString();
 	             } else {
@@ -177,6 +182,7 @@ public class LeadController {
 	                 tutor.put("gender", gender);
 	                 tutor.put("alternate_phone", alternate_phone);
 	                 tutor.put("address", address);
+	                 tutor.put("location", location);
 	                 tutor.put("tutorSubjectList", subjectList);
 	                 tutor.put("tutorGradeList", gradeList);
 	                 tutor.put("tutorSyllabusList", syllabusList);

@@ -31,14 +31,14 @@ public class RefController {
 	 	@RequestMapping(value = "/addRefCity", method = RequestMethod.POST, headers = "Accept=application/json")
 	    public String addRefCity(@RequestBody String refcity) {
 		 String cs_ref_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_ref_mgt");
-		 String city = RestServiceClient.INSTANCE.postForObject(cs_ref_mgtURL + "addRefCity",refcity , String.class);
+		 String city = RestServiceClient.INSTANCE.postForObject(cs_ref_mgtURL + "addRefCity",refcity.toString() , String.class);
 	        return city;
 	    }
 
 	    @RequestMapping(value = "/updateRefCity", method = RequestMethod.POST, headers = "Accept=application/json")
 	    public String updateRefCity(@RequestBody String refcity) {
 	    	String cs_ref_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_ref_mgt");
-			 String city = RestServiceClient.INSTANCE.postForObject(cs_ref_mgtURL + "updateRefCity",refcity , String.class);
+			 String city = RestServiceClient.INSTANCE.postForObject(cs_ref_mgtURL + "updateRefCity",refcity.toString() , String.class);
 		        return city;
 	    }
 
