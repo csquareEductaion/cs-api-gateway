@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.csquare.framework.message.MailMessage;
 import com.csquare.framework.util.PropertyUtil;
 import com.csquare.gateway.util.JsonUtil;
 import com.csquare.gateway.util.RestServiceClient;
@@ -28,6 +29,7 @@ public class LeadController {
 
         String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
         String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
+        String cs_communication_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_communication_mgt");
 
         JSONObject jsonObj = new JSONObject(json);
         // String json = jsonObj.toString();
@@ -49,12 +51,7 @@ public class LeadController {
 	   	 if(isTutor.equals(true)) {
 	   		 user_role =  "1";
 	   	 } 
-	   	 try { 
 	   		 RestServiceClient.INSTANCE.postForObject(cs_lead_mgtURL + "addLead", json, String.class);
-	   	 } finally {
-		   		System.out.println("Error");
-		   	 }
-       
 
         JSONObject user = new JSONObject();
         user.put("firstName", firstName);
@@ -67,7 +64,17 @@ public class LeadController {
         user.put("alternate_phone", alternate_phone);
         user.put("address", address);
         user.put("user_role", user_role);
-        RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "addUser", user.toString(), String.class);
+        String userUpdated = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "addUser", user.toString(), String.class);
+        
+    	 MailMessage message = new MailMessage();
+    	  JSONObject userJson = new JSONObject(userUpdated);
+    	 
+    	 String password = JsonUtil.getString(userJson, "password");
+         message.setToAddress(email);
+         message.setSubject("CsquareEducation Confirmation Email");
+         message.setBody("Your Account is successfully created\n\r UserId: "+email+"\n\r Password: "+password);
+         RestServiceClient.INSTANCE.postForObject(cs_communication_mgtURL+"sendEmail", message, String.class);
+        
 
         return user.toString();
     }

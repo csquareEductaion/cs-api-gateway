@@ -17,11 +17,7 @@ public class UserController {
 
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST, headers = "Accept=application/json")
     public String addUser(@RequestBody String user) {
-		// MailMessage message = new MailMessage();
-        // message.setToAddress(user.getEmail());
-        // message.setSubject("Subject11111111");
-        // message.setBody("lead is created");
-        // RestServiceClient.INSTANCE.postForObject("http://localhost:8084/cs_communication_mgt/sendEmail", message, String.class);
+	
         
 	 String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
 	 String u = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "addUser",user.toString() , String.class);
