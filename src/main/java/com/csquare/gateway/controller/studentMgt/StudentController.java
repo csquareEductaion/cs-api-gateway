@@ -48,5 +48,11 @@ public class StudentController {
     	String studentList = RestServiceClient.INSTANCE.getForObject(cs_student_mgtURL + "getAllStudents/"+offset+"/"+limit, String.class);
     	return studentList;
     }
+    
+    @RequestMapping(value = "/deleteStudentTutor/{studentId}", method = RequestMethod.POST, headers = "Accept=application/json")
+    public void deleteStudentTutor(@PathVariable String studentId) {
+    	String cs_student_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_student_mgt");
+    	RestServiceClient.INSTANCE.postForObject(cs_student_mgtURL + "deleteStudentTutor/"+studentId,"",String.class);
+    }
 
 }

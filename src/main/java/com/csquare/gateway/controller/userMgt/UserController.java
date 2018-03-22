@@ -77,5 +77,35 @@ public class UserController {
   	
   }
 	   
+	   @RequestMapping(value = "/login", method = RequestMethod.POST, headers = "Accept=application/json")
+	    public String login(@RequestBody String user) {
+		
+	        
+		 String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
+		 String u = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "login",user.toString() , String.class);
+	        return u;
+	    }
+	   
+	   @RequestMapping(value = "/logout/{sessionId}", method = RequestMethod.POST, headers = "Accept=application/json")
+	    public void logout(@PathVariable String sessionId) {
+		
+	        
+		 String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
+		 RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "logout/"+sessionId,"",String.class);
+	    }
+	   
+	   @RequestMapping(value = "/getUserBySessionId/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	    public String getUserBySessionId(@PathVariable String id) {
+	   	String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
+	   	String userSession = RestServiceClient.INSTANCE.getForObject(cs_user_mgtURL + "getUserBySessionId/"+id, String.class);
+	   	return userSession;
+   }
+	   
+	   @RequestMapping(value = "/searchUserSession/{offset}/{limit}/{allMatch}", method = RequestMethod.GET, headers = "Accept=application/json")
+	    public String searchUserSession(@PathVariable Integer offset, @PathVariable Integer limit, @PathVariable Integer allMatch) {
+	   	String cs_user_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_user_mgt");
+	   	String userList = RestServiceClient.INSTANCE.getForObject(cs_user_mgtURL + "searchUserSession/"+offset+"/"+limit+"/"+allMatch, String.class);
+	   	return userList;
+   }
 	
 }

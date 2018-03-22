@@ -51,32 +51,42 @@ public class LeadController {
 	   	 if(isTutor.equals(true)) {
 	   		 user_role =  "1";
 	   	 } 
-	   		 RestServiceClient.INSTANCE.postForObject(cs_lead_mgtURL + "addLead", json, String.class);
+	   		String leadDb = RestServiceClient.INSTANCE.postForObject(cs_lead_mgtURL + "addLead", json, String.class);
+	   		
+	   		JSONObject leadFromDb = new JSONObject(leadDb);
+	   		String status = JsonUtil.getString(leadFromDb, "firstName");
+	   		
+	   		String[] s = status.split("-");
+	   		if(s[0].contentEquals("Present")) {
+	   			return "Email already exists";
+	   		} else {
+	   			JSONObject user = new JSONObject();
+	   	        user.put("firstName", firstName);
+	   	        user.put("lastName", lastName);
+	   	        user.put("email", email);
+	   	        user.put("phone", phone);
+	   	        user.put("city", city);
+	   	        user.put("gender", gender);
+	   	        user.put("location", location);
+	   	        user.put("alternate_phone", alternate_phone);
+	   	        user.put("address", address);
+	   	        user.put("user_role", user_role);
+	   	        String userUpdated = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "addUser", user.toString(), String.class);
+	   	        
+	   	    	 MailMessage message = new MailMessage();
+	   	    	  JSONObject userJson = new JSONObject(userUpdated);
+	   	    	 
+	   	    	 String password = JsonUtil.getString(userJson, "password");
+	   	         message.setToAddress(email);
+	   	         message.setSubject("CsquareEducation Confirmation Email");
+	   	         message.setBody("Your Account is successfully created\n\r UserId: "+email+"\n\r Password: "+password);
+	   	         RestServiceClient.INSTANCE.postForObject(cs_communication_mgtURL+"sendEmail", message, String.class);
+	   	        
 
-        JSONObject user = new JSONObject();
-        user.put("firstName", firstName);
-        user.put("lastName", lastName);
-        user.put("email", email);
-        user.put("phone", phone);
-        user.put("city", city);
-        user.put("gender", gender);
-        user.put("location", location);
-        user.put("alternate_phone", alternate_phone);
-        user.put("address", address);
-        user.put("user_role", user_role);
-        String userUpdated = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "addUser", user.toString(), String.class);
-        
-    	 MailMessage message = new MailMessage();
-    	  JSONObject userJson = new JSONObject(userUpdated);
-    	 
-    	 String password = JsonUtil.getString(userJson, "password");
-         message.setToAddress(email);
-         message.setSubject("CsquareEducation Confirmation Email");
-         message.setBody("Your Account is successfully created\n\r UserId: "+email+"\n\r Password: "+password);
-         RestServiceClient.INSTANCE.postForObject(cs_communication_mgtURL+"sendEmail", message, String.class);
-        
+	   	        return leadDb.toString();
+	   		}
 
-        return user.toString();
+        
     }
     
     @RequestMapping(value = "/updateLead", method = RequestMethod.POST, headers = "Accept=application/json")
