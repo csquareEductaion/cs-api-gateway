@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csquare.framework.message.MailMessage;
+import com.csquare.framework.util.FileUtil;
 import com.csquare.framework.util.PropertyUtil;
+import com.csquare.framework.util.StringUtil;
 import com.csquare.gateway.util.JsonUtil;
 import com.csquare.gateway.util.RestServiceClient;
 
@@ -73,14 +75,19 @@ public class LeadController {
 	   	        user.put("user_role", user_role);
 	   	        String userUpdated = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "addUser", user.toString(), String.class);
 	   	        
-	   	    	 MailMessage message = new MailMessage();
-	   	    	  JSONObject userJson = new JSONObject(userUpdated);
-	   	    	 
-	   	    	 String password = JsonUtil.getString(userJson, "password");
-	   	         message.setToAddress(email);
-	   	         message.setSubject("CsquareEducation Confirmation Email");
-	   	         message.setBody("Your Account is successfully created\n\r UserId: "+email+"\n\r Password: "+password);
-	   	         RestServiceClient.INSTANCE.postForObject(cs_communication_mgtURL+"sendEmail", message, String.class);
+	   	        JSONObject userFromDB = new JSONObject(userUpdated);
+	   	        
+	   	        String password = JsonUtil.getString(userFromDB, "password");
+	   	        
+	   	     MailMessage message = new MailMessage();
+   	         message.setToAddress(email);
+	   	      message.setSubject("Enrollment Confirmation From CsquareEducation");
+	          String body=FileUtil.LEAD_CREATE_MAIL_TEMPLATE.getFileAsString();
+	          body = body.replace("{%Lead_Name%}",firstName + " " + lastName);
+	          body = body.replace("{%UserName%}",email);
+	          body = body.replace("{%Password%}", password);
+	          message.setBody(body);
+   	         RestServiceClient.INSTANCE.postForObject(cs_communication_mgtURL+"sendEmail", message, String.class);
 	   	        
 
 	   	        return leadDb.toString();
@@ -95,6 +102,7 @@ public class LeadController {
     	 String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
          String cs_student_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_student_mgt");
          String cs_tutor_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_tutor_mgt");
+         String cs_communication_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_communication_mgt");
          
          JSONObject jsonObj = new JSONObject(json);
          String firstName = JsonUtil.getString(jsonObj, "firstName");
@@ -178,6 +186,15 @@ public class LeadController {
 	                 student.put("syllabus", syllabus);
 	                 student.put("converted", true);
 	                 RestServiceClient.INSTANCE.postForObject(cs_student_mgtURL + "addStudent", student.toString(), String.class);
+	                 
+	                 MailMessage message = new MailMessage();
+		   	         message.setToAddress(email);
+			   	      message.setSubject("Student Enrollment Confirmation From CsquareEducation");
+			          String body=FileUtil.STUDENT_ENROLL_MAIL_TEMPLATE.getFileAsString();
+			          body = body.replace("{%Student_Name%}",firstName + " " + lastName);
+			          message.setBody(body);
+		   	         RestServiceClient.INSTANCE.postForObject(cs_communication_mgtURL+"sendEmail", message, String.class);
+	                 
 	                 return student.toString();
 	             } else {
 	            	  int len=subjectArray.length();
@@ -203,7 +220,15 @@ public class LeadController {
 	                 tutor.put("tutorSubjectList", subjectList);
 	                 tutor.put("tutorGradeList", gradeList);
 	                 tutor.put("tutorSyllabusList", syllabusList);
-	                 RestServiceClient.INSTANCE.postForObject(cs_tutor_mgtURL + "addTutor", tutor.toString(), String.class);
+	                 String t = RestServiceClient.INSTANCE.postForObject(cs_tutor_mgtURL + "addTutor", tutor.toString(), String.class);
+	                 
+	                 MailMessage message = new MailMessage();
+		   	         message.setToAddress(email);
+			   	      message.setSubject("Tutor Enrollment Confirmation From CsquareEducation");
+			          String body=FileUtil.TUTOR_ENROLL_MAIL_TEMPLATE.getFileAsString();
+			          body = body.replace("{%Tutor_Name%}",firstName + " " + lastName);
+			          message.setBody(body);
+		   	         RestServiceClient.INSTANCE.postForObject(cs_communication_mgtURL+"sendEmail", message, String.class);
 	                 return tutor.toString();
 	             }
 	         } else {
@@ -254,14 +279,30 @@ public class LeadController {
 		
 		return allLeadStatus;
     }
-//    
-//    @RequestMapping(value = "/getAllLeads/{offset}/{limit}", method = RequestMethod.GET, headers = "Accept=application/json")
-//    public String getAllLeads(@PathVariable Integer offset, @PathVariable Integer limit) {
-//
-//    	String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
-//    	String allLeads = RestServiceClient.INSTANCE.getForObject(cs_lead_mgtURL + "getAllLeads/"+offset+"/"+limit, String.class);
-//		
-//		return allLeads;
-//    }
+   
+    @RequestMapping(value = "/getAllContact", method = RequestMethod.GET, headers = "Accept=application/json")
+    public String getAllContact() {
+
+    	String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
+    	String allContact = RestServiceClient.INSTANCE.getForObject(cs_lead_mgtURL + "getAllContact", String.class);
+		
+		return allContact;
+    }
+    
+    @RequestMapping(value = "/deleteContact/{id}", method = RequestMethod.POST, headers = "Accept=application/json")
+    public void deleteContact(@PathVariable String id) {
+
+    	String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
+    	RestServiceClient.INSTANCE.postForObject(cs_lead_mgtURL + "deleteContact/"+id,"",String.class);
+    }
+    
+    @RequestMapping(value = "/contactUs", method = RequestMethod.POST, headers = "Accept=application/json")
+    public String contactUs(@RequestBody String contact) {
+
+    	String cs_lead_mgtURL = PropertyUtil.API_GATEWAY.getString("cs_lead_mgt");
+    	 contact = RestServiceClient.INSTANCE.postForObject(cs_lead_mgtURL + "contactUs",contact.toString(),String.class);
+    	 
+    	 return contact;
+    }
     
 }
