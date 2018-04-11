@@ -118,6 +118,7 @@ public class LeadController {
          String leadStatus = JsonUtil.getString(jsonObj, "leadStatus");         
          JSONArray subjectArray = jsonObj.getJSONArray("leadSubjectList");	         
          JSONArray syllabusArray = jsonObj.getJSONArray("leadSyllabusList");
+         String qualification = JsonUtil.getString(jsonObj, "qualification");
          
 	          	int length = syllabusArray.length();
 	          	JSONArray syllabusList = new JSONArray();
@@ -220,6 +221,7 @@ public class LeadController {
 	                 tutor.put("tutorSubjectList", subjectList);
 	                 tutor.put("tutorGradeList", gradeList);
 	                 tutor.put("tutorSyllabusList", syllabusList);
+	                 tutor.put("qualification", qualification);
 	                 String t = RestServiceClient.INSTANCE.postForObject(cs_tutor_mgtURL + "addTutor", tutor.toString(), String.class);
 	                 
 	                 MailMessage message = new MailMessage();
