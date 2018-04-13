@@ -73,6 +73,7 @@ public class LeadController {
 	   	        user.put("alternate_phone", alternate_phone);
 	   	        user.put("address", address);
 	   	        user.put("user_role", user_role);
+	   	        user.put("user_status", "1");
 	   	        String userUpdated = RestServiceClient.INSTANCE.postForObject(cs_user_mgtURL + "addUser", user.toString(), String.class);
 	   	        
 	   	        JSONObject userFromDB = new JSONObject(userUpdated);
@@ -81,11 +82,18 @@ public class LeadController {
 	   	        
 	   	     MailMessage message = new MailMessage();
    	         message.setToAddress(email);
+   	         message.setCcAddress("csquarebangalore@gmail.com");
 	   	      message.setSubject("Enrollment Confirmation From CsquareEducation");
 	          String body=FileUtil.LEAD_CREATE_MAIL_TEMPLATE.getFileAsString();
 	          body = body.replace("{%Lead_Name%}",firstName + " " + lastName);
 	          body = body.replace("{%UserName%}",email);
 	          body = body.replace("{%Password%}", password);
+	          if(isStudent.equals(true)) {
+	        	  body = body.replace("{%leadType%}", "Student");
+	          }
+	          if(isTutor.equals(true)) {
+	        	  body = body.replaceAll("{%leadType%}", "Tutor");
+	          }
 	          message.setBody(body);
    	         RestServiceClient.INSTANCE.postForObject(cs_communication_mgtURL+"sendEmail", message, String.class);
 	   	        
@@ -185,11 +193,12 @@ public class LeadController {
 	                 student.put("grade", grade);
 	                 student.put("location", location);
 	                 student.put("syllabus", syllabus);
-	                 student.put("converted", true);
+	                 student.put("interested", true);
 	                 RestServiceClient.INSTANCE.postForObject(cs_student_mgtURL + "addStudent", student.toString(), String.class);
 	                 
 	                 MailMessage message = new MailMessage();
 		   	         message.setToAddress(email);
+		   	         message.setCcAddress("csquarebangalore@gmail.com");
 			   	      message.setSubject("Student Enrollment Confirmation From CsquareEducation");
 			          String body=FileUtil.STUDENT_ENROLL_MAIL_TEMPLATE.getFileAsString();
 			          body = body.replace("{%Student_Name%}",firstName + " " + lastName);
@@ -222,10 +231,12 @@ public class LeadController {
 	                 tutor.put("tutorGradeList", gradeList);
 	                 tutor.put("tutorSyllabusList", syllabusList);
 	                 tutor.put("qualification", qualification);
+	                 tutor.put("is_interested_for_home_tuition", true);
 	                 String t = RestServiceClient.INSTANCE.postForObject(cs_tutor_mgtURL + "addTutor", tutor.toString(), String.class);
 	                 
 	                 MailMessage message = new MailMessage();
 		   	         message.setToAddress(email);
+		   	         message.setCcAddress("csquarebangalore@gmail.com");
 			   	      message.setSubject("Tutor Enrollment Confirmation From CsquareEducation");
 			          String body=FileUtil.TUTOR_ENROLL_MAIL_TEMPLATE.getFileAsString();
 			          body = body.replace("{%Tutor_Name%}",firstName + " " + lastName);
