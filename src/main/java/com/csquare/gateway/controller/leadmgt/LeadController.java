@@ -85,20 +85,20 @@ public class LeadController {
    	         message.setCcAddress("csquarebangalore@gmail.com");
 	   	      message.setSubject("Enrollment Confirmation From CsquareEducation");
 	          String body=FileUtil.LEAD_CREATE_MAIL_TEMPLATE.getFileAsString();
-	          body = body.replace("{%Lead_Name%}",firstName + " " + lastName);
+	          body = body.replace("{%Lead_Name%}",firstName);
 	          body = body.replace("{%UserName%}",email);
 	          body = body.replace("{%Password%}", password);
 	          if(isStudent.equals(true)) {
 	        	  body = body.replace("{%leadType%}", "Student");
 	          }
-	          if(isTutor.equals(true)) {
-	        	  body = body.replaceAll("{%leadType%}", "Tutor");
+	          else {
+	        	  body = body.replace("{%leadType%}", "Tutor");
 	          }
 	          message.setBody(body);
    	         RestServiceClient.INSTANCE.postForObject(cs_communication_mgtURL+"sendEmail", message, String.class);
 	   	        
 
-	   	        return leadDb.toString();
+	   	        return "Email Successfully Created";
 	   		}
 
         
