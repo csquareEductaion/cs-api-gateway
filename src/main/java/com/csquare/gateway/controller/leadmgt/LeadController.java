@@ -91,7 +91,7 @@ public class LeadController {
 	          if(isStudent.equals(true)) {
 	        	  body = body.replace("{%leadType%}", "Student");
 	          }
-	          else {
+	          if(isTutor.equals(true)){
 	        	  body = body.replace("{%leadType%}", "Tutor");
 	          }
 	          message.setBody(body);
